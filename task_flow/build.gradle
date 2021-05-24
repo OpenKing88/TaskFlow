@@ -2,13 +2,15 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
 }
+apply plugin: 'com.github.dcendents.android-maven'    // 添加本行
+group='com.github.OpenKing88'    // 添加本行
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.1"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 17
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"

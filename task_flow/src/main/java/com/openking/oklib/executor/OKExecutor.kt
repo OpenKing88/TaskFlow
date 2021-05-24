@@ -15,6 +15,7 @@ import java.util.concurrent.locks.ReentrantLock
  * 异步结果主动回调主线程
  * todo 线程池能力监控,耗时任务检测,定时,延迟,
  */
+@Suppress("UNCHECKED_CAST")
 object OKExecutor {
     private const val TAG: String = "OKExecutor"
     private var isPaused: Boolean = false
