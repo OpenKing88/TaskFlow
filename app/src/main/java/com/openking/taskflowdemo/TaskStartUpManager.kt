@@ -6,7 +6,7 @@ import com.openking.oklib.taskflow.Project
 import com.openking.oklib.taskflow.Task
 import com.openking.oklib.taskflow.TaskFlowManager
 
-object TaskStartUp {
+object TaskStartUpManager {
     const val TASK_BLOCK_1 = "block_task_1"
     const val TASK_BLOCK_2 = "block_task_2"
     const val TASK_BLOCK_3 = "block_task_3"
@@ -17,22 +17,11 @@ object TaskStartUp {
 
     @JvmStatic
     fun start() {
-        //apt annotationprocesstool 编译时去收集 项目中所有的task信息，
+        Log.e("TaskStartUpManager", "start")
         /**
-         * @TaskStragtegy(isAysnc=true,taskId='InitPushTask',delayMills=0)
-         * class InitPushTask extends Task{
-         *
-         *    void run(String name){
-         *
-         *    }
-         * }
-         *
-         * javapoet ---生成 TaskStartUp类
+         * 添加任务到任务组，并通过TaskCreator来创建Task，包括异步任务和同步任务
          */
-
-
-        Log.e("TaskStartUp", "start")
-        val project = Project.Builder("TaskStartUp", createTaskCreator())
+        val project = Project.Builder("TaskStartUpManager", createTaskCreator())
             .add(TASK_BLOCK_1)
             .add(TASK_BLOCK_2)
             .add(TASK_BLOCK_3)
@@ -40,14 +29,16 @@ object TaskStartUp {
             .add(TASK_ASYNC_2).dependOn(TASK_BLOCK_2)
             .add(TASK_ASYNC_3).dependOn(TASK_BLOCK_3)
             .build()
-
+        /**
+         * 通过TaskFlowManager来启动初始化任务
+         */
         TaskFlowManager
             .addBlockTask(TASK_BLOCK_1)
             .addBlockTask(TASK_BLOCK_2)
             .addBlockTask(TASK_BLOCK_3)
             .start(project)
 
-        Log.e("TaskStartUp", "end")
+        Log.e("TaskStartUpManager", "end")
     }
 
     private fun createTaskCreator(): ITaskCreator {
@@ -70,8 +61,27 @@ object TaskStartUp {
     fun createTask(taskName: String, isAsync: Boolean): Task {
         return object : Task(taskName, isAsync) {
             override fun run(id: String) {
-                Thread.sleep(if (isAsync) 2000 else 1000)
-                Log.e("TaskStartUp", "task $taskName, $isAsync,finished")
+                when (taskName) {
+                    TASK_ASYNC_1 -> {
+                        //do something
+                    }
+                    TASK_ASYNC_2 -> {
+                        //do something
+                    }
+                    TASK_ASYNC_3 -> {
+                        //do something
+                    }
+                    TASK_BLOCK_1 -> {
+                        //do something
+                    }
+                    TASK_BLOCK_2 -> {
+                        //do something
+                    }
+                    TASK_BLOCK_3 -> {
+                        //do something
+                    }
+                }
+                Log.e("TaskStartUpManager", "task $taskName, $isAsync,finished")
             }
         }
     }
